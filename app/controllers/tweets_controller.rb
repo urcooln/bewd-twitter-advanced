@@ -10,6 +10,12 @@ class TweetsController < ApplicationController
     user = session.user
     @tweet = user.tweets.new(tweet_params)
 
+    if @tweet.save
+      TweetMailer.notify(@tweet).deliver! # invoke TweetMailer to send out the email when a tweet is successfully posted
+      render 'tweets/create'
+    end
+  
+
     render 'tweets/create' if @tweet.save
   end
 
@@ -45,6 +51,6 @@ class TweetsController < ApplicationController
   private
 
   def tweet_params
-    params.require(:tweet).permit(:message)
+    params.require(:tweet).permit(:message, :image)
   end
 end
