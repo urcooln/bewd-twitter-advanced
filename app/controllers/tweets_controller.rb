@@ -12,11 +12,11 @@ class TweetsController < ApplicationController
 
     if @tweet.save
       TweetMailer.notify(@tweet).deliver! # invoke TweetMailer to send out the email when a tweet is successfully posted
-      render 'tweets/create'
+      return render 'tweets/create'
     end
   
 
-    render 'tweets/create' if @tweet.save
+    return render 'tweets/create' if @tweet.save
   end
 
   def destroy
